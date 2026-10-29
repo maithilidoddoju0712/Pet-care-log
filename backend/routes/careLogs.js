@@ -1,0 +1,10 @@
+const express=require('express');
+const router=express.Router();
+const db=require('../supabase');
+const {text,date,positiveId,enumValue,handleValidation}=require('../utils/validation');
+const types=['Feeding','Walk','Exercise','Grooming','Playtime','Other'];
+const validate=handleValidation(req=>{const b=req.body||{};return {pet_id:positiveId(b.pet_id,'Pet'),activity_type:enumValue(b.activity_type,'Activity type',types),activity_date:date(b.activity_date,'Activity date',true),notes:text(b.notes,'Notes',1000)};});
+router.get('/',async(req,res,next)=>{try{const {data,error}=await db.from('care_logs').select('*').order('activity_date',{ascending:false}).order('created_at',{ascending:false});if(error)throw error;res.json({data});}catch(e){next(e);}});
+router.post('/',validate,async(req,res,next)=>{try{const {data,error}=await db.from('care_logs').insert(req.validated).select('*').single();if(error)throw error;res.status(201).json({data});}catch(e){next(e);}});
+router.delete('/:id',handleValidation(req=>({id:positiveId(req.params.id)})),async(req,res,next)=>{try{const {data,error}=await db.from('care_logs').delete().eq('id',req.validated.id).select('id').maybeSingle();if(error)throw error;if(!data)return res.status(404).json({error:'Care activity not found.'});res.status(204).end();}catch(e){next(e);}});
+module.exports=router;

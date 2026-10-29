@@ -1,0 +1,10 @@
+const express=require('express');
+const router=express.Router();
+const db=require('../supabase');
+const {text,date,positiveId,enumValue,handleValidation}=require('../utils/validation');
+const types=['Vaccination','Vet visit','Medication','Dental care','Other'];
+const validate=handleValidation(req=>{const b=req.body||{};const record_date=date(b.record_date,'Record date',true);const next_due_date=date(b.next_due_date,'Next due date');if(next_due_date&&next_due_date<record_date)throw new Error('Next due date cannot be earlier than the record date.');return {pet_id:positiveId(b.pet_id,'Pet'),record_type:enumValue(b.record_type,'Record type',types),record_date,next_due_date,notes:text(b.notes,'Notes',1000)};});
+router.get('/',async(req,res,next)=>{try{const {data,error}=await db.from('health_records').select('*').order('record_date',{ascending:false});if(error)throw error;res.json({data});}catch(e){next(e);}});
+router.post('/',validate,async(req,res,next)=>{try{const {data,error}=await db.from('health_records').insert(req.validated).select('*').single();if(error)throw error;res.status(201).json({data});}catch(e){next(e);}});
+router.delete('/:id',handleValidation(req=>({id:positiveId(req.params.id)})),async(req,res,next)=>{try{const {data,error}=await db.from('health_records').delete().eq('id',req.validated.id).select('id').maybeSingle();if(error)throw error;if(!data)return res.status(404).json({error:'Health record not found.'});res.status(204).end();}catch(e){next(e);}});
+module.exports=router;

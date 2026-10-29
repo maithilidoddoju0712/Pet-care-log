@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7f1">
+  <title>Pet Care Log</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Pet Care Log home"><span class="brand-mark">🐾</span><span>Pet Care <b>Log</b><small>Little moments. Better care.</small></span></a>
+    <nav><a href="#dashboard">Dashboard</a><a href="#pets">My pets</a><a href="#care">Care log</a></nav>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <div><p class="eyebrow">YOUR PET'S HAPPY PLACE</p><h1>Care for them,<br><span>every single day.</span></h1><p class="hero-copy">Keep health records, everyday routines, and important dates in one calm, happy place.</p><a class="button primary" href="#pets">＋ Add your first pet</a></div>
+      <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="hero-emoji">🐶</div><div class="floating paw">🐾</div><div class="floating heart">♡</div></div>
+    </section>
+    <section id="dashboard" class="section">
+      <div class="section-heading"><div><p class="eyebrow">A LITTLE OVERVIEW</p><h2>Your care dashboard</h2></div><button class="button secondary" id="refresh-btn">↻ Refresh</button></div>
+      <div class="stats"><article class="stat-card"><span class="stat-icon lavender">🐾</span><div><p>Total pets</p><strong id="pet-count">—</strong></div></article><article class="stat-card"><span class="stat-icon peach">🩺</span><div><p>Health records</p><strong id="health-count">—</strong></div></article><article class="stat-card"><span class="stat-icon mint">✓</span><div><p>Care activities</p><strong id="care-count">—</strong></div></article></div>
+      <div class="dashboard-grid"><article class="panel"><div class="panel-heading"><div><h3>Upcoming care</h3><p>Health dates to keep an eye on</p></div><span class="panel-icon">📅</span></div><div id="upcoming-list" class="upcoming-list"><p class="muted">Loading your care schedule…</p></div></article><article class="panel tip-panel"><span class="tip-icon">🌿</span><p class="eyebrow">A GENTLE REMINDER</p><h3>Small routines make a big difference.</h3><p>Fresh water, playtime, regular checkups, and lots of affection help pets feel their best.</p></article></div>
+    </section>
+    <section id="pets" class="section">
+      <div class="section-heading"><div><p class="eyebrow">THE FAMILY</p><h2>Meet your pets</h2><p class="section-copy">Every little personality deserves its own page.</p></div><button class="button primary" id="add-pet-btn">＋ Add pet</button></div>
+      <div id="pets-grid" class="pets-grid"><div class="empty-state">Loading pet profiles…</div></div>
+    </section>
+    <section id="care" class="section">
+      <div class="section-heading"><div><p class="eyebrow">THE DAILY DETAILS</p><h2>Care log</h2><p class="section-copy">Record feeding, walks, grooming, and more.</p></div><button class="button primary" id="add-care-btn">＋ Log activity</button></div>
+      <div class="panel"><div class="table-wrap"><table><thead><tr><th>Pet</th><th>Activity</th><th>Date</th><th>Notes</th><th></th></tr></thead><tbody id="care-table"><tr><td colspan="5" class="muted">Loading activities…</td></tr></tbody></table></div></div>
+    </section>
+    <section id="health" class="section">
+      <div class="section-heading"><div><p class="eyebrow">HEALTH & WELLNESS</p><h2>Health records</h2><p class="section-copy">Keep important visits and vaccinations easy to find.</p></div><button class="button primary" id="add-health-btn">＋ Add record</button></div>
+      <div class="panel"><div class="table-wrap"><table><thead><tr><th>Pet</th><th>Record</th><th>Date</th><th>Next due</th><th>Notes</th><th></th></tr></thead><tbody id="health-table"><tr><td colspan="6" class="muted">Loading records…</td></tr></tbody></table></div></div>
+    </section>
+    <footer><span>🐾 Pet Care Log</span><span>Made with care for the ones who make life sweeter.</span></footer>
+  </main>
+  <dialog id="pet-dialog" class="modal"><form id="pet-form"><div class="modal-heading"><div><p class="eyebrow">NEW BEST FRIEND</p><h2 id="pet-modal-title">Add a pet</h2></div><button type="button" class="icon-button close-modal" aria-label="Close">×</button></div><input type="hidden" id="pet-id"><label>Pet name *<input id="pet-name" required maxlength="80" placeholder="e.g. Mochi"></label><div class="form-row"><label>Species *<select id="pet-species" required><option value="">Choose one</option><option>Dog</option><option>Cat</option><option>Bird</option><option>Rabbit</option><option>Fish</option><option>Other</option></select></label><label>Breed<input id="pet-breed" maxlength="80" placeholder="e.g. Indie"></label></div><div class="form-row"><label>Date of birth<input id="pet-birth" type="date"></label><label>Weight (kg)<input id="pet-weight" type="number" min="0" max="1000" step="0.1" placeholder="e.g. 4.5"></label></div><label>Notes<textarea id="pet-notes" rows="3" maxlength="1000" placeholder="Personality, allergies, or other helpful details"></textarea></label><p class="form-error" id="pet-error"></p><div class="modal-actions"><button type="button" class="button secondary close-modal">Cancel</button><button class="button primary" type="submit">Save pet</button></div></form></dialog>
+  <dialog id="care-dialog" class="modal"><form id="care-form"><div class="modal-heading"><div><p class="eyebrow">DAILY ROUTINE</p><h2>Log an activity</h2></div><button type="button" class="icon-button close-modal" aria-label="Close">×</button></div><label>Pet *<select id="care-pet" required></select></label><div class="form-row"><label>Activity *<select id="care-type" required><option>Feeding</option><option>Walk</option><option>Exercise</option><option>Grooming</option><option>Playtime</option><option>Other</option></select></label><label>Date *<input id="care-date" type="date" required></label></div><label>Notes<textarea id="care-notes" rows="3" maxlength="1000" placeholder="How did it go?"></textarea></label><p class="form-error" id="care-error"></p><div class="modal-actions"><button type="button" class="button secondary close-modal">Cancel</button><button class="button primary" type="submit">Save activity</button></div></form></dialog>
+  <dialog id="health-dialog" class="modal"><form id="health-form"><div class="modal-heading"><div><p class="eyebrow">HEALTH & WELLNESS</p><h2>Add health record</h2></div><button type="button" class="icon-button close-modal" aria-label="Close">×</button></div><label>Pet *<select id="health-pet" required></select></label><div class="form-row"><label>Record type *<select id="health-type" required><option>Vaccination</option><option>Vet visit</option><option>Medication</option><option>Dental care</option><option>Other</option></select></label><label>Date *<input id="health-date" type="date" required></label></div><label>Next due date<input id="health-next" type="date"></label><label>Notes<textarea id="health-notes" rows="3" maxlength="1000" placeholder="Clinic, treatment, or follow-up notes"></textarea></label><p class="form-error" id="health-error"></p><div class="modal-actions"><button type="button" class="button secondary close-modal">Cancel</button><button class="button primary" type="submit">Save record</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body></html>
