@@ -164,3 +164,4 @@ Create an empty repository on https://github.com/ and replace `YOUR_GITHUB_REPOS
 - Reminders appear in the dashboard; the app does not send push notifications or emails.
 - Possible improvements: Supabase Auth, owner-specific records and RLS policies, search/filtering, image uploads, appointment management, and automated tests.
 # Pet-care-log
+# Pet-care-log
