@@ -11,3 +11,11 @@ npm-debug.log*
 # Node dependencies
 node_modules/
 **/node_modules/
+
+# Private files
+.env
+**/.env
+
+# Dependencies
+node_modules/
+**/node_modules/
